@@ -32,3 +32,4 @@
 ## Планирование
 
 ![Доска проекта на этапе подготовки README](screenshots/board-progress.png)
+![Итоговая доска проекта](screenshots/board-final.png)
