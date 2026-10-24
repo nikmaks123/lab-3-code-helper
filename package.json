@@ -1,7 +1,7 @@
 {
   "name": "lab-3-code-helper",
   "displayName": "Lab 3 Code Helper",
-  "description": "Расширение для VS Code: приветствие.",
+  "description": "Расширение для VS Code: приветствие и статистика строк",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.140.0"
@@ -18,7 +18,11 @@
   {
     "command": "lab-3-code-helper.helloWorld",
     "title": "Hello World"
-  }
+  },
+  {
+  "command": "lab-3-code-helper.lineStats",
+  "title": "Статистика строк"
+}
 ],
   "menus": {
     "editor/context": [

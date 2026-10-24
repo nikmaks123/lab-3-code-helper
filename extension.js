@@ -28,7 +28,47 @@ helloButton.text = '$(sparkle) Hello';
 helloButton.tooltip = 'Нажми, чтобы показать приветствие';
 helloButton.command = 'lab-3-code-helper.helloWorld';
 helloButton.show();
-	context.subscriptions.push(disposable, helloButton);
+const lineStatsCommand = vscode.commands.registerCommand(
+  'lab-3-code-helper.lineStats',
+  function () {
+    const editor = vscode.window.activeTextEditor;
+
+    if (!editor) {
+      vscode.window.showInformationMessage('Сначала открой файл в редакторе.');
+      return;
+    }
+
+    const lines = editor.document.getText().split('\n');
+    let blankLines = 0;
+    let commentLines = 0;
+    let codeLines = 0;
+
+    for (const line of lines) {
+      const trimmed = line.trim();
+
+      if (trimmed === '') {
+        blankLines++;
+      } else if (
+        trimmed.startsWith('//') ||
+        trimmed.startsWith('#') ||
+        trimmed.startsWith('--') ||
+        trimmed.startsWith('/*') ||
+        trimmed.startsWith('* ')
+      ) {
+        commentLines++;
+      } else {
+        codeLines++;
+      }
+    }
+
+    vscode.window.showInformationMessage(
+      'Код: ' + codeLines +
+      ', комментарии: ' + commentLines +
+      ', пустые строки: ' + blankLines
+    );
+  }
+);
+	context.subscriptions.push(disposable, helloButton, lineStatsCommand);
 }
 // This method is called when your extension is deactivated
 function deactivate() {}
