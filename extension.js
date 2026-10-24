@@ -68,7 +68,53 @@ const lineStatsCommand = vscode.commands.registerCommand(
     );
   }
 );
-	context.subscriptions.push(disposable, helloButton, lineStatsCommand);
+let elapsedSeconds = 0;
+
+const timerItem = vscode.window.createStatusBarItem(
+  vscode.StatusBarAlignment.Right,
+  99
+);
+
+timerItem.text = '$(clock) Работа: 0:00';
+timerItem.command = 'lab-3-code-helper.resetTimer';
+timerItem.tooltip = 'Нажми, чтобы сбросить таймер';
+timerItem.show();
+
+function updateTimer() {
+  const minutes = Math.floor(elapsedSeconds / 60);
+  const seconds = elapsedSeconds % 60;
+
+  timerItem.text =
+    '$(clock) Работа: ' + minutes + ':' + String(seconds).padStart(2, '0');
+}
+
+updateTimer();
+
+const timerInterval = setInterval(function () {
+  elapsedSeconds++;
+  updateTimer();
+}, 1000);
+
+const resetTimerCommand = vscode.commands.registerCommand(
+  'lab-3-code-helper.resetTimer',
+  function () {
+    elapsedSeconds = 0;
+    updateTimer();
+    vscode.window.showInformationMessage('Таймер сброшен.');
+  }
+);
+	context.subscriptions.push(
+  disposable,
+  helloButton,
+  lineStatsCommand,
+  timerItem,
+  resetTimerCommand,
+  {
+    dispose: function () {
+      clearInterval(timerInterval);
+    }
+  }
+);
 }
 // This method is called when your extension is deactivated
 function deactivate() {}
